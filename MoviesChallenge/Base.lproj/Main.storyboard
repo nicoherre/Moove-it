@@ -146,7 +146,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="video-camera.png" translatesAutoresizingMaskIntoConstraints="NO" id="1I6-re-Rrq">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="video-camera.png" translatesAutoresizingMaskIntoConstraints="NO" id="1I6-re-Rrq">
                                 <rect key="frame" x="0.0" y="88" width="375" height="215"/>
                                 <color key="backgroundColor" red="0.74117647060000003" green="0.43529411759999997" blue="0.0039215686269999999" alpha="0.81000000000000005" colorSpace="custom" customColorSpace="sRGB"/>
                                 <gestureRecognizers/>
@@ -157,7 +157,18 @@
                                     <outletCollection property="gestureRecognizers" destination="N39-XN-Jr8" appends="YES" id="mzb-sg-XuK"/>
                                 </connections>
                             </imageView>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="clapperboard.png" translatesAutoresizingMaskIntoConstraints="NO" id="5lz-P5-Pba">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1rd-xm-KmW" customClass="YTPlayerView">
+                                <rect key="frame" x="0.0" y="88" width="375" height="215"/>
+                                <gestureRecognizers/>
+                            </view>
+                            <button hidden="YES" opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GYW-EQ-SvE">
+                                <rect key="frame" x="163.66666666666666" y="171.66666666666666" width="48" height="48"/>
+                                <state key="normal" image="play-button.png"/>
+                                <connections>
+                                    <action selector="playVideo" destination="VYn-fd-gbe" eventType="touchUpInside" id="Fyi-pg-REY"/>
+                                </connections>
+                            </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="clapperboard.png" translatesAutoresizingMaskIntoConstraints="NO" id="5lz-P5-Pba">
                                 <rect key="frame" x="16" y="227.66666666666663" width="120" height="180"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
@@ -260,13 +271,17 @@
                             <constraint firstItem="5lz-P5-Pba" firstAttribute="top" secondItem="1I6-re-Rrq" secondAttribute="centerY" constant="32" id="2nj-Bk-GW4"/>
                             <constraint firstItem="1I6-re-Rrq" firstAttribute="leading" secondItem="GdE-jt-V1z" secondAttribute="leading" id="2zK-QO-YzM"/>
                             <constraint firstItem="1I6-re-Rrq" firstAttribute="trailing" secondItem="GdE-jt-V1z" secondAttribute="trailing" id="6QZ-ht-BD3"/>
+                            <constraint firstItem="1rd-xm-KmW" firstAttribute="leading" secondItem="1I6-re-Rrq" secondAttribute="leading" id="A7P-ar-Gwk"/>
+                            <constraint firstItem="GYW-EQ-SvE" firstAttribute="centerX" secondItem="1rd-xm-KmW" secondAttribute="centerX" id="B4C-BX-oW6"/>
                             <constraint firstItem="Z6K-d9-GQ5" firstAttribute="top" secondItem="Mnj-Iu-cKl" secondAttribute="bottom" constant="16" id="CWB-Vy-kzn"/>
+                            <constraint firstItem="1rd-xm-KmW" firstAttribute="top" secondItem="1I6-re-Rrq" secondAttribute="top" id="Cjn-uU-b3L"/>
                             <constraint firstItem="r2E-od-cpW" firstAttribute="top" secondItem="cR2-IL-lbA" secondAttribute="bottom" constant="8" id="INE-OJ-CJD"/>
                             <constraint firstItem="1I6-re-Rrq" firstAttribute="top" secondItem="GdE-jt-V1z" secondAttribute="top" id="LG4-3i-7LK"/>
                             <constraint firstItem="V6G-hY-cgg" firstAttribute="top" secondItem="cR2-IL-lbA" secondAttribute="top" id="NYf-nn-NID"/>
                             <constraint firstItem="p0k-mq-0ol" firstAttribute="leading" secondItem="njA-G4-j41" secondAttribute="trailing" constant="8" id="QdR-Zn-euF"/>
                             <constraint firstItem="r2E-od-cpW" firstAttribute="leading" secondItem="5lz-P5-Pba" secondAttribute="trailing" constant="8" id="SWu-BT-SAX"/>
                             <constraint firstItem="V6G-hY-cgg" firstAttribute="bottom" secondItem="cR2-IL-lbA" secondAttribute="bottom" id="Spo-Q8-JxU"/>
+                            <constraint firstItem="1rd-xm-KmW" firstAttribute="trailing" secondItem="1I6-re-Rrq" secondAttribute="trailing" id="TEt-3w-ufn"/>
                             <constraint firstItem="GdE-jt-V1z" firstAttribute="trailing" secondItem="p0k-mq-0ol" secondAttribute="trailing" constant="8" id="Vo0-XN-LvY"/>
                             <constraint firstItem="cR2-IL-lbA" firstAttribute="top" secondItem="1I6-re-Rrq" secondAttribute="bottom" constant="8" id="WSK-EX-gaY"/>
                             <constraint firstItem="Mnj-Iu-cKl" firstAttribute="leading" secondItem="GdE-jt-V1z" secondAttribute="leading" constant="16" id="XEs-s2-5Sr"/>
@@ -274,6 +289,8 @@
                             <constraint firstItem="GdE-jt-V1z" firstAttribute="trailing" secondItem="V6G-hY-cgg" secondAttribute="trailing" constant="8" id="cNn-oN-QFN"/>
                             <constraint firstItem="njA-G4-j41" firstAttribute="leading" secondItem="5lz-P5-Pba" secondAttribute="trailing" constant="8" id="cnu-rR-wLg"/>
                             <constraint firstItem="cR2-IL-lbA" firstAttribute="leading" secondItem="5lz-P5-Pba" secondAttribute="trailing" constant="8" id="dsg-dI-d4p"/>
+                            <constraint firstItem="GYW-EQ-SvE" firstAttribute="centerY" secondItem="1rd-xm-KmW" secondAttribute="centerY" id="eq4-Z8-RxW"/>
+                            <constraint firstItem="1rd-xm-KmW" firstAttribute="bottom" secondItem="1I6-re-Rrq" secondAttribute="bottom" id="iVe-cL-nr5"/>
                             <constraint firstItem="GdE-jt-V1z" firstAttribute="bottom" secondItem="Z6K-d9-GQ5" secondAttribute="bottom" constant="16" id="lNU-rc-jS2"/>
                             <constraint firstItem="Mnj-Iu-cKl" firstAttribute="top" secondItem="5lz-P5-Pba" secondAttribute="bottom" constant="16" id="leu-qV-VLS"/>
                             <constraint firstItem="V6G-hY-cgg" firstAttribute="leading" secondItem="cR2-IL-lbA" secondAttribute="trailing" constant="8" id="ma0-wq-fx8"/>
@@ -289,10 +306,12 @@
                         <outlet property="backdrop" destination="1I6-re-Rrq" id="5rZ-O5-qhe"/>
                         <outlet property="genres" destination="r2E-od-cpW" id="Ml8-Fe-gRY"/>
                         <outlet property="lbl_vote" destination="njA-G4-j41" id="RO8-cx-ZQk"/>
+                        <outlet property="play_btn" destination="GYW-EQ-SvE" id="I98-yd-lpc"/>
                         <outlet property="popularity" destination="cR2-IL-lbA" id="UvC-De-nAo"/>
                         <outlet property="poster" destination="5lz-P5-Pba" id="e89-Le-9Tj"/>
                         <outlet property="review_tv" destination="Mnj-Iu-cKl" id="DwF-Fm-5gq"/>
                         <outlet property="stars_vote" destination="p0k-mq-0ol" id="8Gc-xf-LdC"/>
+                        <outlet property="ytView" destination="1rd-xm-KmW" id="Zw7-RW-u31"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nKG-Ve-Kqw" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -471,6 +490,7 @@
     </scenes>
     <resources>
         <image name="clapperboard.png" width="139.19999694824219" height="225.60000610351562"/>
+        <image name="play-button.png" width="48" height="48"/>
         <image name="user.png" width="42.421173095703125" height="42.421173095703125"/>
         <image name="video-camera.png" width="1090.4000244140625" height="808"/>
     </resources>

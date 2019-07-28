@@ -8,9 +8,10 @@
 
 import UIKit
 import Cosmos
+import youtube_ios_player_helper
 
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, YTPlayerViewDelegate {
     
     @IBOutlet weak var backdrop: UIImageView!
     
@@ -20,6 +21,8 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var lbl_vote: UILabel!
     @IBOutlet weak var popularity: UILabel!
     @IBOutlet weak var stars_vote: CosmosView!
+    @IBOutlet weak var play_btn: UIButton!
+    @IBOutlet var ytView : YTPlayerView!
     
     var movie : Movie?
     private var loader : Loader!
@@ -38,14 +41,25 @@ class DetailViewController: UIViewController {
         lbl_vote.text = String(movie!.getVoteAverage())
         stars_vote.rating = movie!.getVoteAverage()/2
         
-        poster.sd_setImage(with: URL(string: movie!.getPosterUrl()), placeholderImage: UIImage(named: "clappeboard.png"))
-        backdrop.sd_setImage(with: URL(string: movie!.getBackdropUrl()), placeholderImage: UIImage(named: "video-camera.png"))
+        poster.sd_setImage(with: URL(string: movie!.getPosterUrl()), placeholderImage: UIImage(named: "clappeboard.png"), progress: nil) { (image, error, cacheType, url) in
+            self.poster.isUserInteractionEnabled = error == nil
+        }
+        backdrop.sd_setImage(with: URL(string: movie!.getBackdropUrl()), placeholderImage: UIImage(named: "video-camera.png"), progress: nil) { (image, error, cacheType, url) in
+            self.backdrop.isUserInteractionEnabled = error == nil
+        }
+        
+        self.ytView.delegate = self
         
         getMovieDetails()
+        getVideo()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         review_tv.setContentOffset(.zero, animated: animated)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        self.ytView.stopVideo()
     }
     
     private func getMovieDetails() {
@@ -84,12 +98,56 @@ class DetailViewController: UIViewController {
         task.resume()
     }
     
+    private func getVideo() {
+        let urlStr = "\(Definitions.urlBase)/movie/\(movie!.id)/videos?\(Definitions.appKey)&\(Definitions.language)"
+        let url = URL(string:urlStr)
+        let task = URLSession.shared.dataTask(with: url!) { (data, response, error) in
+            if (error != nil){
+                print(error!)
+            }
+            else {
+                guard let dataResponse = data,
+                    error == nil else {
+                        print(error?.localizedDescription ?? "Response Error")
+                        return }
+                do{
+                    //here dataResponse received from a network request
+                    let jsonResponse = try JSONSerialization.jsonObject(with:
+                        dataResponse, options: []) as? [String: Any]
+                    
+                    let jsonResult = jsonResponse?["results"]
+                    guard let jsonArray = jsonResult as? [[String: Any]] else {
+                        return
+                    }
+                    for dic in jsonArray{
+                        if let key = dic["key"] as? String, let site = dic["site"] as? String, site == "YouTube" {
+                            self.movie!.idVideoYT = key
+                            break
+                        }
+                    }
+                    
+                    DispatchQueue.main.async {
+                        if self.movie!.idVideoYT != nil {
+                            self.ytView.load(withVideoId: self.movie!.idVideoYT!)
+                        }
+                    }
+                    
+                } catch let parsingError {
+                    print("Error", parsingError)
+                }
+            }
+        }
+        task.resume()
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let movieReviewsVC = segue.destination as! MovieReviewsVC
         movieReviewsVC.movie = movie;
         let backItem = UIBarButtonItem()
         backItem.title = "Back"
         navigationItem.backBarButtonItem = backItem
+        
+        self.loader.hideLoading()
     }
     
     @IBAction func imageTapped(_ sender: UITapGestureRecognizer) {
@@ -104,7 +162,7 @@ class DetailViewController: UIViewController {
         newImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(exitFullScreen)))
         newImageView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(panFullScreen(_:))))
         newImageView.autoresizingMask = UIView.AutoresizingMask(rawValue:   UIView.AutoresizingMask.flexibleWidth.rawValue |
-                                                                            UIView.AutoresizingMask.flexibleHeight.rawValue)
+            UIView.AutoresizingMask.flexibleHeight.rawValue)
         
         self.bigView = UIView(frame: self.view.frame)
         self.bigView.alpha = 0
@@ -119,10 +177,9 @@ class DetailViewController: UIViewController {
         
         self.view?.addSubview(self.bigView)
         
-        UIView.animate(withDuration: 0.5, animations: {
+        UIView.animate(withDuration: 0.5) {
             newImageView.frame = self.bigView.frame
             self.bigView.alpha = 1
-        }) { (_) in
         }
         
     }
@@ -133,7 +190,7 @@ class DetailViewController: UIViewController {
         
         let intDuration = 0.5
         let blackView = self.bigView.subviews[0]
-        let imageV = self.bigView.subviews[1] as! UIImageView
+        let imageV = self.bigView.subviews[1]
         
         UIView.animate(withDuration: intDuration, animations: {
             let posterPosition = self.view.convert(self.prevFrame, to: nil)
@@ -147,7 +204,7 @@ class DetailViewController: UIViewController {
     
     @objc func panFullScreen(_ recognizer : UIPanGestureRecognizer) {
         let blackView = self.bigView.subviews[0]
-        let imageV = self.bigView.subviews[1] as! UIImageView
+        let imageV = self.bigView.subviews[1]
         let center = self.view.frame.size.height / 2
         
         let translation = recognizer.translation(in: imageV)
@@ -171,5 +228,59 @@ class DetailViewController: UIViewController {
                 self.exitFullScreen()
             }
         }
+    }
+    
+    
+    @IBAction func playVideo() {
+        loader.changeCenter(to: self.play_btn.center)
+        loader.showLoading()
+        self.ytView.playVideo()
+        UIView.animate(withDuration: 0.5, animations: {
+            self.play_btn.alpha = 0
+        })
+    }
+    
+    func playerViewPreferredWebViewBackgroundColor(_ playerView: YTPlayerView) -> UIColor {
+        return UIColor.clear
+    }
+    
+    func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
+        self.play_btn.isHidden = false
+        UIView.animate(withDuration: 0.5, animations: {
+            self.play_btn.alpha = 1
+        })
+    }
+    
+    func playerView(_ playerView: YTPlayerView, didChangeTo state: YTPlayerState) {
+        print("El estado es: \(state)")
+        switch(state) {
+        case YTPlayerState.unstarted:
+            print("Unstarted")
+            break
+        case YTPlayerState.queued:
+            print("Ready to play")
+            break
+        case YTPlayerState.playing:
+            print("Video playing")
+            loader.hideLoading()
+            break
+        case YTPlayerState.paused:
+            print("Video paused")
+            UIView.animate(withDuration: 0.5, animations: {
+                self.play_btn.alpha = 1
+            })
+            break
+        default:
+            print("default")
+            break
+        }
+    }
+    
+    func playerView(_ playerView: YTPlayerView, receivedError error: YTPlayerError) {
+        NSLog("There was an error, try again later...")
+        let alert = UIAlertController(title: "Error", message: "There was an error, try again later.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+        loader.hideLoading()
     }
 }

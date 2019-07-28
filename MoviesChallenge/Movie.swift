@@ -17,35 +17,40 @@ class Movie: NSObject {
     private var genres : Array<String> = []
     private var overview = ""
     var backdropPath = ""
+    var idVideoYT : String?
     
     var id = 0
     
+    let TITLE           = "title"
+    let RELEASE_DATE    = "release_date"
+    let POPULARITY      = "popularity"
+    let VOTE_AVERAGE    = "vote_average"
+    let POSTER_PATH     = "poster_path"
+    let BACKDROP_PATH   = "backdrop_path"
+    let POSTER_SIZE     = "w500"
+    let BACKDROP_SIZE   = "w780"
+    let OVERVIEW        = "overview"
     
     init(movieDic: [String: Any]){
         self.id = movieDic["id"] as! Int
-        guard let title = movieDic["title"] as? String else { return }
+        guard let title = movieDic[TITLE] as? String else { return }
         self.title = title
         
-        let date = movieDic["release_date"] as! String
+        let date = movieDic[RELEASE_DATE] as! String
         self.year = date
         
-        self.popularity = (movieDic["popularity"] as! NSNumber).stringValue
+        self.popularity = (movieDic[POPULARITY] as! NSNumber).stringValue
+        self.voteAverage = movieDic[VOTE_AVERAGE] as? Double ?? 0
         
-        self.voteAverage = movieDic["vote_average"] as? Double ?? 0
+        if let filePath = movieDic[POSTER_PATH] as? String {
+            self.posterPath = Definitions.urlImageBase + POSTER_SIZE + filePath
+        }
         
-        let base_url = "http://image.tmdb.org/t/p/"
-        let file_size = "w500"
-        
-        var filePath = movieDic["poster_path"] as? String ?? ""
-        var urlString = base_url + file_size + filePath
-        self.posterPath = urlString
-        
-        filePath = movieDic["backdrop_path"] as? String ?? ""
-        urlString = base_url + "w780" + filePath
-        self.backdropPath = urlString
-        
-        
-        self.overview = movieDic["overview"] as! String
+        if let filePath = movieDic[BACKDROP_PATH] as? String {
+            self.backdropPath = Definitions.urlImageBase + BACKDROP_SIZE + filePath
+        }
+
+        self.overview = movieDic[OVERVIEW] as! String
     }
     
     func setGenres(from genresArray: [[String: Any]]) {

@@ -29,6 +29,10 @@ class Loader: NSObject{
         view.addSubview(self.loader_container!)
     }
     
+    func changeCenter (to center: CGPoint){
+        self.loader_container.center = center
+    }
+    
     func showLoading() {
         if self.loader_container.isHidden {
             self.loader_container.alpha = 0
