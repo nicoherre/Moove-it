@@ -119,18 +119,28 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="aok-Lt-JxI"/>
                                 </connections>
                             </collectionView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No results content." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fcT-eJ-Q4d">
+                                <rect key="frame" x="8" y="396" width="359" height="20.333333333333314"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="0.58431372550000005" blue="0.0039215686269999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Ptr-s9-hNy" secondAttribute="trailing" constant="8" id="DkL-30-4d1"/>
+                            <constraint firstItem="fcT-eJ-Q4d" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Kqj-bs-6Tm"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="fcT-eJ-Q4d" secondAttribute="trailing" constant="8" id="QhZ-wm-ryy"/>
                             <constraint firstItem="Ptr-s9-hNy" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="SEN-2E-Tmg"/>
                             <constraint firstItem="Ptr-s9-hNy" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="Vtd-wC-km2"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Ptr-s9-hNy" secondAttribute="bottom" id="hMw-gM-t1B"/>
+                            <constraint firstItem="fcT-eJ-Q4d" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="mfu-oj-1Aj"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" title="Movies" id="Zqv-Lj-gzd"/>
                     <connections>
+                        <outlet property="emptyResults_lbl" destination="fcT-eJ-Q4d" id="6OR-01-bXu"/>
                         <outlet property="gridView" destination="Ptr-s9-hNy" id="HND-Ky-Da7"/>
                     </connections>
                 </viewController>
@@ -186,7 +196,7 @@
                                 </connections>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z6K-d9-GQ5">
-                                <rect key="frame" x="122" y="722" width="131" height="40"/>
+                                <rect key="frame" x="122" y="673" width="131" height="40"/>
                                 <color key="backgroundColor" red="1" green="0.58431372549019611" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="26K-9j-xEZ"/>
@@ -257,7 +267,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="justified" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mnj-Iu-cKl">
-                                <rect key="frame" x="16" y="423.66666666666674" width="343" height="282.33333333333326"/>
+                                <rect key="frame" x="16" y="423.66666666666669" width="343" height="233.33333333333331"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -302,6 +312,8 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="GdE-jt-V1z"/>
                     </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="backdrop" destination="1I6-re-Rrq" id="5rZ-O5-qhe"/>
                         <outlet property="genres" destination="r2E-od-cpW" id="Ml8-Fe-gRY"/>
