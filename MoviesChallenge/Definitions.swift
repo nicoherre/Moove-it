@@ -14,5 +14,4 @@ class Definitions {
     static let urlBase = "https://api.themoviedb.org/3"
     static let language = "language=en-US"
     static let urlImageBase = "http://image.tmdb.org/t/p/"
-    static let urlYouTube = "https://www.youtube.com/watch?v="
 }

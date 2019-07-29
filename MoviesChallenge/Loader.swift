@@ -13,6 +13,7 @@ class Loader: NSObject{
     
     private var loader_container: UIView!
     private var loader: UIImageView!
+    private var label: UILabel!
     
     init(view: UIView) {
         super.init()
@@ -26,7 +27,17 @@ class Loader: NSObject{
         self.loader_container.addSubview(self.loader!)
         self.loader_container.isHidden = true
         
+        self.label = UILabel.init(frame: CGRect(x: 0, y: 60, width: 80, height: 20))
+        self.label.textAlignment = NSTextAlignment.center
+        self.label.textColor = UIColor.white
+        self.label.font = self.label.font.withSize(14)
+        self.loader_container.addSubview(label)
+        
         view.addSubview(self.loader_container!)
+    }
+    
+    func setText(text : String) {
+        self.label.text = text
     }
     
     func changeCenter (to center: CGPoint){

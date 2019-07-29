@@ -8,10 +8,10 @@
 
 import UIKit
 import Cosmos
-import youtube_ios_player_helper
+import YoutubePlayer_in_WKWebView
 
 
-class DetailViewController: UIViewController, YTPlayerViewDelegate {
+class DetailViewController: UIViewController, WKYTPlayerViewDelegate {
     
     @IBOutlet weak var backdrop: UIImageView!
     
@@ -22,7 +22,7 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate {
     @IBOutlet weak var popularity: UILabel!
     @IBOutlet weak var stars_vote: CosmosView!
     @IBOutlet weak var play_btn: UIButton!
-    @IBOutlet var ytView : YTPlayerView!
+    @IBOutlet weak var ytView : WKYTPlayerView!
     
     var movie : Movie?
     private var loader : Loader!
@@ -240,31 +240,32 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate {
         })
     }
     
-    func playerViewPreferredWebViewBackgroundColor(_ playerView: YTPlayerView) -> UIColor {
-        return UIColor.clear
-    }
-    
-    func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
+    func playerViewDidBecomeReady(_ playerView: WKYTPlayerView) {
         self.play_btn.isHidden = false
         UIView.animate(withDuration: 0.5, animations: {
             self.play_btn.alpha = 1
         })
     }
     
-    func playerView(_ playerView: YTPlayerView, didChangeTo state: YTPlayerState) {
-        print("El estado es: \(state)")
+    func playerView(_ playerView: WKYTPlayerView, didChangeTo state: WKYTPlayerState) {
+        self.loader.setText(text: "")
         switch(state) {
-        case YTPlayerState.unstarted:
-            print("Unstarted")
+        case WKYTPlayerState.buffering:
+            print("Buffering")
+            self.loader.setText(text: "Buffering...")
             break
-        case YTPlayerState.queued:
+        case WKYTPlayerState.unstarted:
+            print("Unstarted")
+            self.ytView.playVideo()
+            break
+        case WKYTPlayerState.queued:
             print("Ready to play")
             break
-        case YTPlayerState.playing:
+        case WKYTPlayerState.playing:
             print("Video playing")
             loader.hideLoading()
             break
-        case YTPlayerState.paused:
+        case WKYTPlayerState.paused:
             print("Video paused")
             UIView.animate(withDuration: 0.5, animations: {
                 self.play_btn.alpha = 1
@@ -276,7 +277,7 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate {
         }
     }
     
-    func playerView(_ playerView: YTPlayerView, receivedError error: YTPlayerError) {
+    func playerViewIframeAPIDidFailed(toLoad playerView: WKYTPlayerView) {
         NSLog("There was an error, try again later...")
         let alert = UIAlertController(title: "Error", message: "There was an error, try again later.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))

@@ -8,6 +8,6 @@ target 'MoviesChallenge' do
   # Pods for MoviesChallenge
     pod 'Cosmos', '~> 19.0'
     pod 'SDWebImage', '~> 5.0'
-    pod 'youtube-ios-player-helper', '~> 0.1.4'
+    pod 'YoutubePlayer-in-WKWebView', '~> 0.3.0'
 
 end
