@@ -65,79 +65,53 @@ class DetailViewController: UIViewController, WKYTPlayerViewDelegate {
     private func getMovieDetails() {
         let urlStr = "\(Definitions.urlBase)/movie/\(movie!.id)?\(Definitions.appKey)&\(Definitions.language)"
         let url = URL(string:urlStr)
-        let task = URLSession.shared.dataTask(with: url!) { (data, response, error) in
+        let connection = URLConnection.init()
+        connection.requestURL(url!) { (jsonResponse, error) in
             if (error != nil){
                 print(error!)
             }
             else {
-                guard let dataResponse = data,
-                    error == nil else {
-                        print(error?.localizedDescription ?? "Response Error")
-                        return }
-                do{
-                    //here dataResponse received from a network request
-                    let jsonResponse = try JSONSerialization.jsonObject(with:
-                        dataResponse, options: []) as? [String: Any]
-                    
-                    let jsonResult = jsonResponse?["genres"]
-                    guard let jsonArray = jsonResult as? [[String: Any]] else {
-                        return
-                    }
-                    self.movie!.setGenres(from: jsonArray)
-                    
-                    DispatchQueue.main.async {
-                        self.genres.text = self.movie!.getGenresString()
-                        self.loader.hideLoading()
-                    }
-                    
-                } catch let parsingError {
-                    print("Error", parsingError)
+                let jsonResult = jsonResponse?["genres"]
+                guard let jsonArray = jsonResult as? [[String: Any]] else {
+                    return
+                }
+                self.movie!.setGenres(from: jsonArray)
+                
+                DispatchQueue.main.async {
+                    self.genres.text = self.movie!.getGenresString()
+                    self.loader.hideLoading()
                 }
             }
         }
-        task.resume()
     }
     
     private func getVideo() {
         let urlStr = "\(Definitions.urlBase)/movie/\(movie!.id)/videos?\(Definitions.appKey)&\(Definitions.language)"
         let url = URL(string:urlStr)
-        let task = URLSession.shared.dataTask(with: url!) { (data, response, error) in
+        let connection = URLConnection.init()
+        connection.requestURL(url!) { (jsonResponse, error) in
             if (error != nil){
                 print(error!)
             }
             else {
-                guard let dataResponse = data,
-                    error == nil else {
-                        print(error?.localizedDescription ?? "Response Error")
-                        return }
-                do{
-                    //here dataResponse received from a network request
-                    let jsonResponse = try JSONSerialization.jsonObject(with:
-                        dataResponse, options: []) as? [String: Any]
-                    
-                    let jsonResult = jsonResponse?["results"]
-                    guard let jsonArray = jsonResult as? [[String: Any]] else {
-                        return
+                let jsonResult = jsonResponse?["results"]
+                guard let jsonArray = jsonResult as? [[String: Any]] else {
+                    return
+                }
+                for dic in jsonArray{
+                    if let key = dic["key"] as? String, let site = dic["site"] as? String, site == "YouTube" {
+                        self.movie!.idVideoYT = key
+                        break
                     }
-                    for dic in jsonArray{
-                        if let key = dic["key"] as? String, let site = dic["site"] as? String, site == "YouTube" {
-                            self.movie!.idVideoYT = key
-                            break
-                        }
+                }
+                
+                DispatchQueue.main.async {
+                    if self.movie!.idVideoYT != nil {
+                        self.ytView.load(withVideoId: self.movie!.idVideoYT!)
                     }
-                    
-                    DispatchQueue.main.async {
-                        if self.movie!.idVideoYT != nil {
-                            self.ytView.load(withVideoId: self.movie!.idVideoYT!)
-                        }
-                    }
-                    
-                } catch let parsingError {
-                    print("Error", parsingError)
                 }
             }
         }
-        task.resume()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

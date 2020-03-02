@@ -38,43 +38,30 @@ class MovieReviewsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     func getMovieReviews(){
         let urlStr = "\(Definitions.urlBase)/movie/\(movie!.id)/reviews?\(Definitions.appKey)&\(Definitions.language)&page=1"
         let url = URL(string:urlStr)
-        let task = URLSession.shared.dataTask(with: url!) { (data, response, error) in
+        let connection = URLConnection.init()
+        connection.requestURL(url!) { (jsonResponse, error) in
             if (error != nil){
                 print(error!)
             }
             else {
-                guard let dataResponse = data,
-                    error == nil else {
-                        print(error?.localizedDescription ?? "Response Error")
-                        return }
-                do{
-                    //here dataResponse received from a network request
-                    let jsonResponse = try JSONSerialization.jsonObject(with:
-                        dataResponse, options: []) as? [String: Any]
-                    
-                    let jsonResult = jsonResponse?["results"]
-                    guard let jsonArray = jsonResult as? [[String: Any]] else {
-                        return
-                    }
-                    for dic in jsonArray{
-                        let review = ReviewItem.init(with: dic)
-                        self.reviews.append(review)
-                    }
-                    
-                    let totalReviews = jsonResponse?["total_results"] as! Int
-                    DispatchQueue.main.async {
-                        self.lbl_not_review.isHidden = totalReviews > 0
-                        self.lbl_reviews.text = "Reviews (\(totalReviews))"
-                        self.table.reloadData()
-                        self.loader.hideLoading()
-                    }
-                    
-                } catch let parsingError {
-                    print("Error", parsingError)
+                let jsonResult = jsonResponse?["results"]
+                guard let jsonArray = jsonResult as? [[String: Any]] else {
+                    return
+                }
+                for dic in jsonArray{
+                    let review = ReviewItem.init(with: dic)
+                    self.reviews.append(review)
+                }
+                
+                let totalReviews = jsonResponse?["total_results"] as! Int
+                DispatchQueue.main.async {
+                    self.lbl_not_review.isHidden = totalReviews > 0
+                    self.lbl_reviews.text = "Reviews (\(totalReviews))"
+                    self.table.reloadData()
+                    self.loader.hideLoading()
                 }
             }
         }
-        task.resume()
     }
     
     // MARK: TableView protocol
