@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="bua-ot-1e5">
-    <device id="retina5_9" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="bua-ot-1e5">
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,33 +20,33 @@
                                 <rect key="frame" x="8" y="88" width="359" height="690"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="hC1-jx-K1P">
-                                    <size key="itemSize" width="180" height="273"/>
+                                    <size key="itemSize" width="160" height="273"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="10"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MovieReusableView" id="NAG-WE-1Xi" customClass="MovieViewCell" customModule="MoviesChallenge" customModuleProvider="target">
-                                        <rect key="frame" x="89.666666666666671" y="10" width="180" height="273"/>
+                                        <rect key="frame" x="10" y="10" width="160" height="273"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                            <rect key="frame" x="0.0" y="0.0" width="180" height="273"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="160" height="273"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="clapperboard.png" translatesAutoresizingMaskIntoConstraints="NO" id="8vb-MH-hVb">
-                                                    <rect key="frame" x="0.0" y="0.0" width="180" height="273"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="160" height="273"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </imageView>
                                                 <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="izj-1e-Wvv">
-                                                    <rect key="frame" x="0.0" y="215" width="180" height="58"/>
+                                                    <rect key="frame" x="0.0" y="215" width="160" height="58"/>
                                                     <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="gBR-Jh-b8I">
-                                                        <rect key="frame" x="0.0" y="0.0" width="180" height="58"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="160" height="58"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     </view>
                                                     <blurEffect style="dark"/>
                                                 </visualEffectView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Film name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3z3-fm-sGT">
-                                                    <rect key="frame" x="8" y="245" width="164" height="20"/>
+                                                    <rect key="frame" x="8" y="245" width="144" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="C8E-WK-1eE"/>
                                                     </constraints>
@@ -64,7 +62,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g0l-e7-BL1" customClass="CosmosView" customModule="Cosmos">
-                                                    <rect key="frame" x="20" y="12" width="140" height="20"/>
+                                                    <rect key="frame" x="20" y="12" width="120" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="yB5-HI-ZrL"/>
                                                     </constraints>
@@ -172,7 +170,7 @@
                                 <gestureRecognizers/>
                             </view>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GYW-EQ-SvE">
-                                <rect key="frame" x="163.66666666666666" y="171.66666666666666" width="48" height="48"/>
+                                <rect key="frame" x="155.66666666666666" y="163.66666666666666" width="64" height="64"/>
                                 <state key="normal" image="play-button.png"/>
                                 <connections>
                                     <action selector="playVideo" destination="VYn-fd-gbe" eventType="touchUpInside" id="Fyi-pg-REY"/>
@@ -354,7 +352,7 @@
                                 <color key="separatorColor" red="1" green="0.58610576390000002" blue="0.003067336744" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <inset key="separatorInset" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="8pw-W6-dNO" userLabel="Footer">
-                                    <rect key="frame" x="0.0" y="128" width="375" height="10"/>
+                                    <rect key="frame" x="0.0" y="156" width="375" height="10"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
@@ -363,7 +361,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="100"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="awL-gD-nFK" id="dJ6-Cx-CRu">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="99.666666666666671"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user.png" translatesAutoresizingMaskIntoConstraints="NO" id="9Uo-zd-mC9">
