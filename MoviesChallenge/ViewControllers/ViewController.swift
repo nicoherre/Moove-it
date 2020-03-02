@@ -69,55 +69,38 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     func requestURL(_ url: URL?){
         loader.showLoading()
         let filterResult = !searchBarIsEmpty()
-        task = URLSession.shared.dataTask(with: url!) { (data, response, error) in
+        let urlConnection = URLConnection.init()
+        urlConnection.requestURL(url) { (jsonResponse, error) in
             self.loadingData = false
             if (error != nil){
                 print(error!)
                 self.emptyResults_lbl.isHidden = false
             }
-            else if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                guard let dataResponse = data,
-                    error == nil else {
-                        print(error?.localizedDescription ?? "Response Error")
-                        return }
-                do{
-                    //here dataResponse received from a network request
-                    let jsonResponse = try JSONSerialization.jsonObject(with:
-                        dataResponse, options: []) as? [String: Any]
-                    
-                    self.totalPages = jsonResponse?["total_pages"] as! Int
-                    if !filterResult {
-                        self.actualPage += 1
+            else {
+                self.totalPages = jsonResponse?["total_pages"] as! Int
+                if !filterResult {
+                    self.actualPage += 1
+                }
+                
+                let jsonResult = jsonResponse?["results"]
+                guard let jsonArray = jsonResult as? [[String: Any]] else {
+                    return
+                }
+                for dic in jsonArray{
+                    let movie = Movie.init(movieDic: dic)
+                    if filterResult {
+                        self.searchResults.append(movie)
+                    } else {
+                        self.movies.append(movie)
                     }
-                    
-                    let jsonResult = jsonResponse?["results"]
-                    guard let jsonArray = jsonResult as? [[String: Any]] else {
-                        return
-                    }
-                    for dic in jsonArray{
-                        let movie = Movie.init(movieDic: dic)
-                        if filterResult {
-                            self.searchResults.append(movie)
-                        } else {
-                            self.movies.append(movie)
-                        }
-                    }
-                    DispatchQueue.main.async {
-                        self.emptyResults_lbl.isHidden = jsonArray.count > 0
-                        self.gridView.reloadData()
-                        self.loader.hideLoading()
-                    }
-                    
-                } catch let parsingError {
-                    print("Error", parsingError)
+                }
+                DispatchQueue.main.async {
+                    self.emptyResults_lbl.isHidden = jsonArray.count > 0
+                    self.gridView.reloadData()
+                    self.loader.hideLoading()
                 }
             }
-            else {
-                self.emptyResults_lbl.isHidden = false
-            }
-        
         }
-        task!.resume()
     }
     
     func searchBarIsEmpty() -> Bool {
